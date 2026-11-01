@@ -53,6 +53,16 @@ Then, in any app: **hold fn**, hear a *tink*, speak, **release fn**, hear a *pop
 
 Press `Ctrl+C` in the terminal to quit. Or have it start on its own at every login: see the next section.
 
+### Options
+
+```
+./run.sh --no-sound          # no tink/pop sounds
+./run.sh --dry-run           # print transcripts, don't type them
+./run.sh --keep-alive 1h     # keep the model in RAM longer (-1 = forever)
+./run.sh --model <name>      # use another Ollama audio model
+./run.sh --url http://host:11434   # use Ollama on another machine
+```
+
 ## Start automatically at login
 
 ```bash
@@ -66,16 +76,6 @@ Press `Ctrl+C` in the terminal to quit. Or have it start on its own at every log
 The background process is **Python**, not your terminal, so macOS asks for Microphone, Input Monitoring and Accessibility again, this time for Python. If Python does not show up in Input Monitoring or Accessibility, click **+** and add the `Python.app` path that `./autostart.sh on` prints. Then run `./autostart.sh restart`.
 
 > **Security note:** these permissions are granted to the Homebrew Python app as a whole. Any other script run with that same Python also gets keyboard and screen-control access. If that worries you, skip autostart and use `./run.sh` in a terminal. A Homebrew Python upgrade can also reset the permissions; grant them again if dictation stops working.
-
-### Options
-
-```
-./run.sh --no-sound          # no tink/pop sounds
-./run.sh --dry-run           # print transcripts, don't type them
-./run.sh --keep-alive 1h     # keep the model in RAM longer (-1 = forever)
-./run.sh --model <name>      # use another Ollama audio model
-./run.sh --url http://host:11434   # use Ollama on another machine
-```
 
 ## Troubleshooting
 
