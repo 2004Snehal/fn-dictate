@@ -10,6 +10,7 @@ import argparse
 import base64
 import io
 import json
+import os
 import queue
 import sys
 import threading
@@ -204,11 +205,28 @@ class FnListener:
             Quartz.CFRunLoopRunInMode(Quartz.kCFRunLoopDefaultMode, 0.5, False)
 
 
+def permission_target() -> str:
+    """The app macOS shows in Privacy settings: the terminal, or Python.app when run in the background."""
+    if sys.stdin is not None and sys.stdin.isatty():
+        return "your terminal app"
+    real = os.path.realpath(sys.executable)
+    app = os.path.join(real.split("/bin/")[0], "Resources", "Python.app")
+    return app if os.path.isdir(app) else real
+
+
 def request_permissions() -> None:
-    for name in ("CGRequestListenEventAccess", "CGRequestPostEventAccess"):
-        fn = getattr(Quartz, name, None)
-        if fn is not None:
-            fn()
+    """Ask macOS for keyboard permissions and log what is missing."""
+    checks = [("Input Monitoring", "CGPreflightListenEventAccess", "CGRequestListenEventAccess"),
+              ("Accessibility", "CGPreflightPostEventAccess", "CGRequestPostEventAccess")]
+    for label, preflight, request in checks:
+        if not hasattr(Quartz, preflight):
+            continue
+        if getattr(Quartz, preflight)():
+            log(f"{label}: allowed")
+        else:
+            getattr(Quartz, request)()
+            log(f"{label}: NOT allowed. Enable it for {permission_target()} in System Settings > "
+                f"Privacy & Security > {label}, then restart fn-dictate.")
 
 
 # --------------------------------------------------------------------------- main loop
@@ -228,14 +246,17 @@ def controller(events: queue.Queue, jobs: queue.Queue, recorder: Recorder,
                 play("Basso", sounds)
                 continue
             recording, started = True, time.time()
+            log("fn down: recording...")
             play("Tink", sounds)
         elif ev == "cancel" and recording:
             recorder.stop()
             recording = False
+            log("cancelled (fn used with another key)")
         elif ev == "up" and recording:
             audio = recorder.stop()
             recording = False
             if time.time() - started < MIN_HOLD_SEC:
+                log("fn tap too short, ignored (hold it while you speak)")
                 continue
             play("Pop", sounds)
             jobs.put(audio)
