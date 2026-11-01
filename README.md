@@ -20,7 +20,7 @@ Everything runs on your Mac. The speech model is [IBM Granite Speech 4.1 2B](htt
 brew install ollama python   # skip what you already have
 open -a Ollama               # or: brew services start ollama
 
-git clone <this repo url> fn-dictate
+git clone https://github.com/2004Snehal/fn-dictate.git
 cd fn-dictate
 ./install.sh
 ```
