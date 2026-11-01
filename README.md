@@ -51,7 +51,21 @@ Then, in any app: **hold fn**, hear a *tink*, speak, **release fn**, hear a *pop
 - Long dictations are split into 30 s pieces automatically.
 - Your clipboard is restored after each paste.
 
-Press `Ctrl+C` in the terminal to quit.
+Press `Ctrl+C` in the terminal to quit. Or have it start on its own at every login: see the next section.
+
+## Start automatically at login
+
+```bash
+./autostart.sh on        # start now and at every login, in the background (no terminal needed)
+./autostart.sh status    # is it running?
+./autostart.sh logs      # see transcripts and errors
+./autostart.sh restart   # after changing permissions
+./autostart.sh off       # stop and remove
+```
+
+The background process is **Python**, not your terminal, so macOS asks for Microphone, Input Monitoring and Accessibility again, this time for Python. If Python does not show up in Input Monitoring or Accessibility, click **+** and add the `Python.app` path that `./autostart.sh on` prints. Then run `./autostart.sh restart`.
+
+> **Security note:** these permissions are granted to the Homebrew Python app as a whole. Any other script run with that same Python also gets keyboard and screen-control access. If that worries you, skip autostart and use `./run.sh` in a terminal. A Homebrew Python upgrade can also reset the permissions; grant them again if dictation stops working.
 
 ### Options
 
