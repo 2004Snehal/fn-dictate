@@ -1,0 +1,4 @@
+numpy>=1.24
+sounddevice>=0.4.6
+pyobjc-framework-Quartz>=10.0
+pyobjc-framework-Cocoa>=10.0
