@@ -5,7 +5,7 @@ Hold the **fn** key, speak, let go. Your words get typed wherever the cursor is:
 Everything runs on your Mac. The speech model is [IBM Granite Speech 4.1 2B](https://huggingface.co/ibm-granite/granite-speech-4.1-2b-GGUF) (Apache 2.0), served by [Ollama](https://ollama.com). No audio leaves your computer, and there are no API keys or subscriptions.
 
 - **Speed:** about 1 s to transcribe 5 s of speech on an Apple Silicon MacBook Air.
-- **RAM:** about 2.4–3.2 GB while the model is loaded. Ollama frees it after 30 min of no use.
+- **RAM:** about 2.4–3.2 GB while the model is loaded. Ollama frees it after 5 min of no use.
 - **Disk:** about 3.1 GB for the model.
 
 ## Requirements
@@ -58,7 +58,7 @@ Press `Ctrl+C` in the terminal to quit. Or have it start on its own at every log
 ```
 ./run.sh --no-sound          # no tink/pop sounds
 ./run.sh --dry-run           # print transcripts, don't type them
-./run.sh --keep-alive 1h     # keep the model in RAM longer (-1 = forever)
+./run.sh --keep-alive 30m    # keep the model in RAM longer (default 5m, -1 = forever)
 ./run.sh --model <name>      # use another Ollama audio model
 ./run.sh --url http://host:11434   # use Ollama on another machine
 ```

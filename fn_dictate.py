@@ -294,7 +294,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Hold fn to dictate anywhere on macOS (local Granite Speech via Ollama).")
     p.add_argument("--model", default=DEFAULT_MODEL, help="Ollama model name")
     p.add_argument("--url", default=DEFAULT_URL, help="Ollama server URL")
-    p.add_argument("--keep-alive", default="30m",
+    p.add_argument("--keep-alive", default="5m",
                    help="How long Ollama keeps the model in RAM after last use (e.g. 10m, 1h, -1 = forever)")
     p.add_argument("--no-sound", action="store_true", help="Disable start/stop sounds")
     p.add_argument("--dry-run", action="store_true", help="Print transcripts but do not type them")
